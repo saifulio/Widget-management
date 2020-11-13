@@ -10,4 +10,6 @@ public class WidgetManagementApplication {
 		SpringApplication.run(WidgetManagementApplication.class, args);
 	}
 
+
+
 }
