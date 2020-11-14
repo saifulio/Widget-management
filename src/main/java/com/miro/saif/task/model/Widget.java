@@ -54,6 +54,34 @@ public class Widget {
         return true;
     }
 
+    public static boolean delete(int id) {
+        try
+        {
+
+            DataSource dsc = new DataSourceConfig().getDataSource();
+            Connection conn = dsc.getConnection();
+
+            String query = String.format(
+                    "DELETE FROM widgets WHERE id = %d",
+                    id
+            );
+
+            // create the java statement
+            Statement st = conn.createStatement();
+
+            st.execute(query);
+
+            st.close();
+        }
+        catch (Exception e)
+        {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
     public int getX() {
         return x;
     }

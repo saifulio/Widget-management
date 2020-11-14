@@ -40,7 +40,7 @@ public class WidgetManagementApplication {
 
 	@DeleteMapping("/widgets/{id}")
 	public HttpStatus deleteWidget(@PathVariable Integer id) {
-		System.out.println(id);
+		Widget.delete(id);
 		return HttpStatus.OK;
 	}
 
