@@ -1,5 +1,8 @@
 package com.miro.saif.task.model;
 
+import com.miro.saif.task.DataSourceConfig;
+
+import javax.sql.DataSource;
 import java.sql.*;
 
 public class Widget {
@@ -26,12 +29,10 @@ public class Widget {
 
         try
         {
-            // create our mysql database connection
-            String myUrl = "jdbc:h2:mem:task";
 
-            Connection conn = DriverManager.getConnection(myUrl, "saif", "Saif@Miro");
+            DataSource dsc = new DataSourceConfig().getDataSource();
+            Connection conn = dsc.getConnection();
 
-            // if you only need a few columns, specify them by name instead of using "*"
             String query = String.format(
                     "INSERT INTO widgets (x, y, width, height) VALUES (%d, %d, %d, %d);",
                     this.x, this.y, this.width, this.height
