@@ -1,5 +1,7 @@
 package com.miro.saif.task.model;
 
+import java.sql.*;
+
 public class Widget {
     private int id;
     private int x;
@@ -18,6 +20,37 @@ public class Widget {
         this.width = width;
         this.height = height;
         this.zIndex = 1;
+    }
+
+    public boolean save() {
+
+        try
+        {
+            // create our mysql database connection
+            String myUrl = "jdbc:h2:mem:task";
+
+            Connection conn = DriverManager.getConnection(myUrl, "saif", "Saif@Miro");
+
+            // if you only need a few columns, specify them by name instead of using "*"
+            String query = String.format(
+                    "INSERT INTO widgets (x, y, width, height) VALUES (%d, %d, %d, %d);",
+                    this.x, this.y, this.width, this.height
+            );
+
+            // create the java statement
+            Statement st = conn.createStatement();
+
+            st.execute(query);
+
+            st.close();
+        }
+        catch (Exception e)
+        {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
     }
 
     public int getX() {

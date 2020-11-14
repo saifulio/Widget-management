@@ -26,7 +26,7 @@ public class WidgetManagementApplication {
 
 	@PostMapping("/widgets")
 	public Widget createWidget(@RequestBody Widget widget) {
-		System.out.println(widget.getX());
+		widget.save();
 		return widget;
 	}
 
