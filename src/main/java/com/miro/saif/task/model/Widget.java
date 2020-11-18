@@ -4,6 +4,8 @@ import com.miro.saif.task.DataSourceConfig;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Widget {
     private int id;
@@ -74,6 +76,46 @@ public class Widget {
         }
         return widget;
     }
+
+    public static List<Widget> retrieveAll() {
+        List<Widget> widgets = new ArrayList<>();
+        try
+        {
+
+            DataSource dsc = new DataSourceConfig().getDataSource();
+            Connection conn = dsc.getConnection();
+
+            String query = "SELECT * FROM widgets;";
+
+            Statement st = conn.createStatement();
+
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next())
+            {
+                int id = rs.getInt("id");
+                int x = rs.getInt("x");
+                int y = rs.getInt("y");
+                int width = rs.getInt("width");
+                int height = rs.getInt("height");
+                int zIndex = rs.getInt("zIndex");
+
+                widgets.add(new Widget(id, x, y, width, height, zIndex));
+
+            }
+
+            st.close();
+        }
+        catch (Exception e)
+        {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+            return null;
+        }
+        return widgets;
+    }
+
+
 
     public boolean save() {
 

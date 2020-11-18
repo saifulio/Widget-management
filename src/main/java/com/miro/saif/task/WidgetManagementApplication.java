@@ -46,7 +46,7 @@ public class WidgetManagementApplication {
 
 	@GetMapping("/widgets")
 	public List<Widget> getWidgets() {
-		List<Widget> widgets= new ArrayList<>();
+		List<Widget> widgets = Widget.retrieveAll();
 		return widgets;
 	}
 
