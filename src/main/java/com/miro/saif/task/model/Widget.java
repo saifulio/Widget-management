@@ -25,6 +25,56 @@ public class Widget {
         this.zIndex = 1;
     }
 
+    public Widget(int id, int x, int y, int width, int height, int zIndex){
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.zIndex = zIndex;
+    }
+
+    public static Widget retrieve(int reqId) {
+        Widget widget = null;
+        try
+        {
+
+            DataSource dsc = new DataSourceConfig().getDataSource();
+            Connection conn = dsc.getConnection();
+
+            String query = String.format(
+                    "SELECT * FROM widgets WHERE id= %d;",
+                    reqId
+            );
+
+            Statement st = conn.createStatement();
+
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next())
+            {
+                int id = rs.getInt("id");
+                int x = rs.getInt("x");
+                int y = rs.getInt("y");
+                int width = rs.getInt("width");
+                int height = rs.getInt("height");
+                int zIndex = rs.getInt("zIndex");
+
+                widget = new Widget(id, x, y, width, height, zIndex);
+
+            }
+
+            st.close();
+        }
+        catch (Exception e)
+        {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+            return null;
+        }
+        return widget;
+    }
+
     public boolean save() {
 
         try

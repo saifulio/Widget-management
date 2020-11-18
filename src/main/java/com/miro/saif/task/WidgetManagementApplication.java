@@ -19,9 +19,9 @@ public class WidgetManagementApplication {
 	}
 
 	@GetMapping("/widgets/{id}")
-	public String getWidget(@PathVariable Integer id) {
-		System.out.println(id);
-		return "Widget id: " + id;
+	public Widget getWidget(@PathVariable Integer id) {
+		Widget widget = Widget.retrieve(id);
+		return widget;
 	}
 
 	@PostMapping("/widgets")
