@@ -34,7 +34,9 @@ public class WidgetManagementApplication {
 	public Widget updateWidget(
 			@RequestBody Map<String, Object> updates,
 			@PathVariable Integer id) {
-		Widget widget = new Widget();
+
+		Widget widget = Widget.update(id, updates);
+
 		return widget;
 	}
 

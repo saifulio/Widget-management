@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Widget {
     private int id;
@@ -144,6 +145,52 @@ public class Widget {
             return false;
         }
         return true;
+    }
+
+    public static Widget update(int reqId, Map<String, Object> map) {
+        Widget widget = null;
+        try
+        {
+
+            DataSource dsc = new DataSourceConfig().getDataSource();
+            Connection conn = dsc.getConnection();
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("UPDATE widgets SET ");
+            // Todo: Need to sanitize the request
+            for(Map.Entry<String, Object> m : map.entrySet()) {
+                sb.append(m.getKey());
+                sb.append(" = ");
+                int value = (Integer) m.getValue();
+                sb.append(Integer.toString(value));
+                sb.append(", ");
+            }
+            // removing last comma
+            sb.delete(sb.length()-2, sb.length()-1);
+
+            sb.append(" WHERE id = ");
+
+            sb.append(Integer.toString(reqId));
+            sb.append(";");
+
+            String query = sb.toString();
+
+            Statement st = conn.createStatement();
+
+            st.execute(query);
+
+            st.close();
+        }
+        catch (Exception e)
+        {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+            return null;
+        }
+
+        widget = Widget.retrieve(reqId);
+
+        return widget;
     }
 
     public static boolean delete(int id) {
