@@ -125,6 +125,7 @@ public class Widget {
 
             DataSource dsc = new DataSourceConfig().getDataSource();
             Connection conn = dsc.getConnection();
+            conn.setAutoCommit(false);
 
             String query = String.format(
                     "INSERT INTO widgets (x, y, width, height) VALUES (%d, %d, %d, %d);",
@@ -136,6 +137,17 @@ public class Widget {
 
             st.execute(query);
 
+            query = String.format("SELECT * FROM widgets where Id=(select max(id) from widgets)");
+
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next())
+            {
+                this.id = rs.getInt("id");
+                this.zIndex = rs.getInt("zIndex");
+            }
+            conn.commit();
+
             st.close();
         }
         catch (Exception e)
@@ -144,6 +156,8 @@ public class Widget {
             System.err.println(e.getMessage());
             return false;
         }
+
+
         return true;
     }
 
